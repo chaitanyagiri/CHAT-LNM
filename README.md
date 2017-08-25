@@ -10,10 +10,10 @@ Nodejs, ExpressJS
 
 ### Installing
 
-$ git clone https://github.com/chaitanyagiri/CHAT-LNM.git
-$ cd CHAT-LNM
-$ npm install
-$ npm start 
+$ git clone https://github.com/chaitanyagiri/CHAT-LNM.git <br>
+$ cd CHAT-LNM<br>
+$ npm install<br>
+$ npm start <br>
 
 ## Deployment
 
