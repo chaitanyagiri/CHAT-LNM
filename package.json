@@ -1,0 +1,15 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "A prototype version of chat-app. A much better version will be available soon.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chaitanya Giri",
+  "license": "ISC",
+  "dependencies": {
+  "socket.io": "*",
+  "express": "*"
+  }
+}

@@ -1,0 +1,37 @@
+body{
+	background-color:#14d7de;
+	overflow-x:hidden;
+	
+}
+#mainwrapper{
+	display:none;
+}
+#chatroom{
+	border:1px solid black;
+	height:65%;
+	margin:auto;
+	font-size:30px;	
+	padding:10px;
+	padding-left:10px;
+}
+#userlogin{
+	font-size:30px;	
+}
+#messagebox{
+	padding-top:20px;
+	z-index: 10;
+	position: fixed; 
+	bottom: 0px;
+	width:100%;
+	font-size:20px;
+}
+#message{
+	width:70%;
+	font-size:30px;
+}
+#activeusers{
+	border:1px solid black;
+	height:35%;
+	overflow-y:scroll;
+	margin:auto;
+}

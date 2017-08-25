@@ -1,0 +1,117 @@
+<html>
+	<head>
+		<title>CHAT LNM</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="shortcut icon" type="image/png" href="images/logo.png"/> 
+	</head>
+	<body>
+		<div class="col-md-12" id="userlogin">
+			<div class="col-md-12">
+			<img src="images/logo.png" width='150px' height='150px' style="">
+			</div>
+			
+			<div class="col-md-12 text-center">
+				<hr>
+				<h2>
+					Welcome to the world of anonymous chatting.<br>
+					This app targets everyone who want to speak their hearts out.<br>
+				</h2>
+				<p style="font-size:20px!important;text-align:left;margin-left:25%;">
+					Here are quick rules:<br>
+					&nbsp&nbsp&nbsp1. No abusing (Any type of abusing will lead to blocking your IP).<br>
+					&nbsp&nbsp&nbsp2. Choose whatever usernames you want.<br>
+					&nbsp&nbsp&nbsp3. Each and every person here is from your college only.<br>
+					&nbsp&nbsp&nbsp4. You may even access it from mobile phone.<br>
+					&nbsp&nbsp&nbsp5. You just need to connect to any of the college's wifi<br>
+					&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp or even hotspot created by college's internet<br>
+				</p>
+				<p>Enter your username to login to chatroom:</p>
+				<form id="loginform" class="text-center">
+					<input type="text" placeholder="Your username" autocomplete="off" id="username">
+					<input class="btn btn-primary btn-lg" type="submit" value="Go Anonymous">			
+				</form>
+				<div id="error"></div>	
+			</div>
+			<div class="text-center advertize" style="height:500px;">
+			<!--
+				<p>This app is sponsored by <a href="http://8things.co/" target="_blank">8things.co</a>.</p>
+			
+				<iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fknow8things&tabs=timeline&width=500&height=200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId" width="500" height="200" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+				-->
+			</div>
+			<p style="color:#14d7de;font-size:10px">Chaitanya Giri</p>	
+		</div>
+		<div  id="mainwrapper">
+			<div class="col-md-12">
+			<img src="images/logo.png" width='150px' height='150px' style="">
+			</div>
+			<div class="col-md-12 row">
+			<div class="col-md-10"id="chatroom" style="overflow-y:scroll;">  
+					<form id="messagebox" class="text-center" >
+						<input type="text" placeholder="What's in your mind" autocomplete="off" id="message">
+						<input class="btn btn-primary btn-lg" style="padding-left:30px;padding-right:30px;padding-top:13px;padding-bottom:13px;height:auto;" type="submit" value="Send">			
+					</form>			
+			</div>
+			<div class="col-md-2 text-center" id="activeusers">
+				<div id="activenow"></div>
+				<h4>Active Users:</h4>
+					<div id="users">
+					</div>			
+			</div>
+			</div>	
+		</div>
+		<script src="/jquery-3.2.1.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script> 
+		<script>
+			$(function(){
+				var socket = io.connect();
+				var $message = $("#message");
+				var $chatData = $("#chatroom");
+				var $messageForm = $("#messagebox");
+				var $userlogin = $("#userlogin");
+				var $username = $("#username"); 
+				var $error = $("#error");
+				var wtf;
+  				var height;
+				$userlogin.submit(function(e){
+					e.preventDefault();
+					
+					socket.emit("newUser",$username.val(),function callbock(x){
+						if(x==false){
+							$error.html("!!Username already exist.<br> Please try any other name");
+						}
+						else{
+							$userlogin.css("display","none");
+							$("#mainwrapper").css("display","block");
+						}
+					});	
+					$username.val('');		
+				});
+				socket.on("username",function(data){
+					var userlist = "";
+					for(var i = 0;i<data.length;i++)
+					{
+						console.log(data[i]);
+						userlist += ("<p>"+(i+1)+". "+data[i]+"</p>");
+						
+					}
+					$("#activenow").html("Total users active now: "+data.length);
+					$("#users").html(userlist);
+				});
+				$messageForm.submit(function(e){
+					e.preventDefault()
+					socket.emit("messageRequest",$message.val());
+					$message.val('');
+					wtf    = $('#chatroom');
+  					height = wtf[0].scrollHeight;
+  					wtf.scrollTop(height);
+				});
+				socket.on("newMessage",function(data){
+					$chatData.append("<strong>"+data.user+"</strong>:"+data.message+"<br>");				
+				});			
+			});
+		</script>
+	</body>
+</html>
